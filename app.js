@@ -4,6 +4,8 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const blogsRoute = require("./routes/blogs")
+const authRoute = require("./routes/auth")
+
 require("dotenv").config()
 
 const app = express()
@@ -23,8 +25,9 @@ app.use(morgan("dev"))
 app.use(bodyParser.urlencoded({limit:"2mb", extended: false}))
 app.use(bodyParser.json({limit:"2mb"}))
 
-//route
+//router
 app.use("/api", blogsRoute)
+app.use('/api/auth', authRoute)
 
 const port = process.env.PORT || 8080
 
