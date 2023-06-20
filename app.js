@@ -5,6 +5,7 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const blogsRoute = require("./routes/blogs")
 const authRoute = require("./routes/auth")
+const eventsRoute = require('./routes/events')
 
 require("dotenv").config()
 
@@ -26,8 +27,9 @@ app.use(bodyParser.urlencoded({limit:"2mb", extended: false}))
 app.use(bodyParser.json({limit:"2mb"}))
 
 //router
-app.use("/api", blogsRoute)
 app.use('/api/auth', authRoute)
+app.use("/api", blogsRoute)
+app.use('/api', eventsRoute)
 
 const port = process.env.PORT || 8080
 
