@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
       if (user) {
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch) {
-          return res.status(400).send("Password Invalid!!!")
+          return res.status(400).send("Password is incorrect!!!")
         }
         //Payload
         var payload = {
