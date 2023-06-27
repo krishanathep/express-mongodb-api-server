@@ -6,16 +6,23 @@ exports.register = async (req, res) => {
   try {
 
     //Check User
-    const { name, password } = req.body
-    var user = await Users.findOne({ name })
+    const { name, email, password } = req.body
+    var user = await Users.findOne({ email })
     if(user){
         return res.status(400).send("User Already Exists!!!")
     }
+
+    //password validator
+    if(req.body.password != req.body.password_confirmation){
+      return res.status(400).send("Passwords do not match!!!")
+    }
+  
 
     //Encrypt
     const salt = await bcrypt.genSalt(10)
     user = new Users({
         name,
+        email,
         password
     })
     user.password = await bcrypt.hash(password, salt)
@@ -32,8 +39,8 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
       //Check User
-      const { name, password } = req.body
-      var user = await Users.findOneAndUpdate({ name }, { new: true})
+      const { email, password } = req.body
+      var user = await Users.findOneAndUpdate({ email }, { new: true})
       console.log(user)
       if (user) {
         const isMatch = await bcrypt.compare(password, user.password)
@@ -43,13 +50,14 @@ exports.login = async (req, res) => {
         //Payload
         var payload = {
           user: {
-            name: user.name
+            name: user.name,
+            email: user.email
           }
         }
         //Generate
         jwt.sign(payload, 'jwtsecret', { expiresIn: 60}, (err,token)=>{
             if(err) throw err;
-            res.json({ token, payload })
+            res.status(200).json({ token, payload })
         })
       } else {
         return res.status(400).send("User not found!!!")
