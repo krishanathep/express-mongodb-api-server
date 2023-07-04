@@ -2,8 +2,12 @@ const Blogs = require("../models/blogs");
 
 exports.create = async (req, res) => {
   try {
-    const newBlogs = await new Blogs(req.body).save();
-    console.log(newBlogs);
+    var data = req.body
+    if (req.file) {
+      data.file = req.file.filename
+    }
+    const newBlogs = await new Blogs(data).save();
+    console.log(newBlogs)
     res.status(200).send(newBlogs);
   } catch (err) {
     console.log(err);

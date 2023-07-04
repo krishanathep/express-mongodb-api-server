@@ -13,6 +13,10 @@ const blogsSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+    file:{
+        type:String,
+        require:true
+    },
 },{timestamps:true})
 
 module.exports = mongoose.model('blogs',blogsSchema)

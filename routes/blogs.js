@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { create, list, read, update, remove } = require("../controllers/blogsController");
 
-router.post("/blogs", create);
+const { upload } = require('../Middleware/upload')
+
+router.post("/blogs",upload, create);
 router.get("/blogs", list);
 router.get("/blogs/:id", read);
 router.put("/blogs/:id", update);
