@@ -1,4 +1,5 @@
 const Blogs = require("../models/blogs");
+const fs = require('fs')
 
 exports.create = async (req, res) => {
   try {
@@ -60,6 +61,13 @@ exports.remove = async (req, res) => {
   try {
     const id = req.params.id;
     const deleteBlog = await Blogs.findByIdAndDelete(id).exec();
+    await fs.unlink('./uploads/' + this.remove.file, (error)=>{
+      if(error){
+        console.log(error)
+      } else {
+        console.log('Remove success')
+      }
+    })
     console.log(deleteBlog)
     res.status(200).send(deleteBlog)
   } catch (err) {

@@ -31,6 +31,9 @@ app.use('/api/auth', authRoute)
 app.use("/api", blogsRoute)
 app.use('/api', eventsRoute)
 
+//get images
+app.use('/images', express.static('uploads'));
+
 const port = process.env.PORT || 8080
 
 app.listen(port, ()=>console.log(`Start server in port ${port}`))
